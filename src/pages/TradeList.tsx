@@ -84,6 +84,9 @@ export function TradeList() {
                       {trade.status === 'CLOSED' && trade.sellPrice && (
                         <p className={`font-bold ${trade.sellPrice > trade.buyPrice ? 'text-success' : 'text-danger'}`}>
                           PnL: {formatIDR((trade.sellPrice - trade.buyPrice) * trade.qty * 100)}
+                          <span className="text-xs ml-1 font-medium">
+                            ({((trade.sellPrice - trade.buyPrice) / trade.buyPrice * 100).toFixed(2)}%)
+                          </span>
                         </p>
                       )}
                     </div>

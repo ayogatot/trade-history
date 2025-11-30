@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 export function Dashboard() {
   const navigate = useNavigate();
   const { stats, trades } = useTrades();
-  const recentTrades = trades.slice(0, 5);
+  const openTrades = trades.filter(t => t.status === 'OPEN');
 
   const formatIDR = (val: number) => 
     new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
@@ -23,58 +23,58 @@ export function Dashboard() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="relative overflow-hidden">
-          <div className="flex justify-between items-start">
+        <Card>
+          <div className="flex flex-col gap-4">
+            <div className={`w-12 h-12 flex items-center justify-center rounded-xl shadow-soft border border-white/50 ${stats.todayPnL >= 0 ? 'bg-green-100 text-success' : 'bg-red-100 text-danger'}`}>
+              {stats.todayPnL >= 0 ? <TrendingUp size={24} /> : <TrendingDown size={24} />}
+            </div>
             <div>
               <p className="text-sm text-gray-500 font-medium">Today's PnL</p>
               <h3 className={`text-2xl font-bold mt-1 ${stats.todayPnL >= 0 ? 'text-success' : 'text-danger'}`}>
                 {formatIDR(stats.todayPnL)}
               </h3>
             </div>
-            <div className={`p-3 rounded-xl ${stats.todayPnL >= 0 ? 'bg-green-100 text-success' : 'bg-red-100 text-danger'}`}>
-              {stats.todayPnL >= 0 ? <TrendingUp size={24} /> : <TrendingDown size={24} />}
-            </div>
           </div>
         </Card>
 
         <Card>
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col gap-4">
+            <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-blue-100 shadow-soft border border-white/50 text-accent">
+              <Wallet size={24} />
+            </div>
             <div>
               <p className="text-sm text-gray-500 font-medium">Total PnL</p>
               <h3 className={`text-2xl font-bold mt-1 ${stats.totalPnL >= 0 ? 'text-success' : 'text-danger'}`}>
                 {formatIDR(stats.totalPnL)}
               </h3>
             </div>
-            <div className="p-3 rounded-xl bg-blue-100 text-accent">
-              <Wallet size={24} />
-            </div>
           </div>
         </Card>
 
         <Card>
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col gap-4">
+            <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-orange-100 shadow-soft border border-white/50 text-warning">
+              <Activity size={24} />
+            </div>
             <div>
               <p className="text-sm text-gray-500 font-medium">Win Rate</p>
               <h3 className="text-2xl font-bold mt-1 text-primary">
                 {stats.winRate.toFixed(1)}%
               </h3>
             </div>
-            <div className="p-3 rounded-xl bg-amber-100 text-warning">
-              <Activity size={24} />
-            </div>
           </div>
         </Card>
 
         <Card>
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col gap-4">
+            <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-gray-200 shadow-soft border border-white/50 text-gray-500">
+              <List size={24} />
+            </div>
             <div>
               <p className="text-sm text-gray-500 font-medium">Open Trades</p>
               <h3 className="text-2xl font-bold mt-1 text-primary">
                 {stats.openTrades}
               </h3>
-            </div>
-            <div className="p-3 rounded-xl bg-gray-200 text-gray-600">
-              <List size={24} />
             </div>
           </div>
         </Card>
@@ -82,14 +82,14 @@ export function Dashboard() {
 
       {/* Recent Activity */}
       <section>
-        <h2 className="text-xl font-bold text-primary mb-4">Recent Activity</h2>
+        <h2 className="text-xl font-bold text-primary mb-4">Open Positions</h2>
         <div className="space-y-4">
-          {recentTrades.length === 0 ? (
+          {openTrades.length === 0 ? (
             <Card className="text-center py-12">
-              <p className="text-gray-400">No trades yet. Start by adding one!</p>
+              <p className="text-gray-400">No open positions. Start by adding one!</p>
             </Card>
           ) : (
-            recentTrades.map((trade) => (
+            openTrades.map((trade) => (
               <Card key={trade.id} className="flex items-center justify-between p-4 hover:scale-[1.01] transition-transform cursor-pointer">
                 <div className="flex items-center gap-4">
                   <div className={`w-2 h-12 rounded-full ${trade.status === 'OPEN' ? 'bg-accent' : trade.sellPrice && trade.sellPrice > trade.buyPrice ? 'bg-success' : 'bg-danger'}`} />

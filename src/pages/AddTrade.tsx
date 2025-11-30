@@ -190,9 +190,14 @@ export function AddTrade() {
           {formData.status === 'CLOSED' && formData.sellPrice && (
              <div className={`p-4 rounded-xl border border-white/50 shadow-soft-inner ${estimatedPnL >= 0 ? 'bg-green-50' : 'bg-red-50'}`}>
                <p className="text-sm text-gray-500">Estimated PnL</p>
-               <p className={`text-xl font-bold ${estimatedPnL >= 0 ? 'text-success' : 'text-danger'}`}>
-                 {formatIDR(estimatedPnL)}
-               </p>
+               <div className="flex items-baseline gap-2">
+                 <p className={`text-xl font-bold ${estimatedPnL >= 0 ? 'text-success' : 'text-danger'}`}>
+                   {formatIDR(estimatedPnL)}
+                 </p>
+                 <span className={`text-sm font-medium ${estimatedPnL >= 0 ? 'text-success' : 'text-danger'}`}>
+                   ({totalInvested > 0 ? ((estimatedPnL / totalInvested) * 100).toFixed(2) : 0}%)
+                 </span>
+               </div>
              </div>
           )}
 
