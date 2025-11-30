@@ -18,7 +18,7 @@ export function TradeList() {
     : trades.filter(t => t.type === filterType);
 
   const formatIDR = (val: number) => 
-    new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
+    new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(val);
 
   const handleDelete = (id: string) => {
     if (confirm('Are you sure you want to delete this trade?')) {

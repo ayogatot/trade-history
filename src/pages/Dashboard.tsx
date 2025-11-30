@@ -12,7 +12,7 @@ export function Dashboard() {
   const openTrades = trades.filter(t => t.status === 'OPEN');
 
   const formatIDR = (val: number) => 
-    new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
+    new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(val);
 
   return (
     <div className="space-y-8 pb-24 md:pb-8">

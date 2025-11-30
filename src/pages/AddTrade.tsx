@@ -48,7 +48,7 @@ export function AddTrade() {
   const estimatedPnL = currentValue && totalInvested ? currentValue - totalInvested : 0;
 
   const formatIDR = (val: number) => 
-    new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
+    new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(val);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,6 +133,7 @@ export function AddTrade() {
               onChange={handleChange}
               required
               min="0"
+              step="any"
             />
             <Input 
               id="qty" 
@@ -163,6 +164,7 @@ export function AddTrade() {
                 { value: 'CLOSED', label: 'Closed Position' },
               ]}
             />
+            <p className="text-xs text-gray-400 mt-2 ml-1">Change status to <b>Closed Position</b> to enter sell details.</p>
           </div>
 
           {/* Sell Details - Visible when Closed */}
@@ -184,6 +186,7 @@ export function AddTrade() {
               onChange={handleChange}
               required={formData.status === 'CLOSED'}
               min="0"
+              step="any"
             />
           </div>
 
